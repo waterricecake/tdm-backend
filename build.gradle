@@ -30,7 +30,9 @@ dependencies {
 
 	testImplementation 'io.rest-assured:rest-assured'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'com.h2database:h2'
+	runtimeOnly 'com.h2database:h2'
+
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2"
 }
 
 tasks.named('test') {
