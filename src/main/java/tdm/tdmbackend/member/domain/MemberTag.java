@@ -12,12 +12,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tdm.tdmbackend.global.BaseEntity;
 import tdm.tdmbackend.tag.domain.Tag;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class MemberTag {
+public class MemberTag extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -1,0 +1,10 @@
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('공부인증', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('질문', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('정보글', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('일상', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('입시', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('자격증', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('자소서', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('면접', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('NCS', now(), now(), 'USABLE');
+INSERT INTO tag(name, created_at, updated_at, status) VALUES ('실습', now(), now(), 'USABLE');

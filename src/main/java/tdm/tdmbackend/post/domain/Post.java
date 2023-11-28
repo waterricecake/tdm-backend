@@ -30,6 +30,9 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(nullable = false)
+    private String title;
+
     @Lob
     @Column(nullable = false)
     private String content;

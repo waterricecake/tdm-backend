@@ -26,7 +26,7 @@ public abstract class BaseEntity {
 
     @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     @Enumerated(value = STRING)
