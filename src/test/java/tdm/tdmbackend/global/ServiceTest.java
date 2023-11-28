@@ -1,4 +1,4 @@
-package tdm.tdmbackend.service;
+package tdm.tdmbackend.global;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

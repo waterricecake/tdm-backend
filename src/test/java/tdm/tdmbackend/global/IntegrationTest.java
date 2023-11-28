@@ -1,4 +1,4 @@
-package tdm.tdmbackend.integration;
+package tdm.tdmbackend.global;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
