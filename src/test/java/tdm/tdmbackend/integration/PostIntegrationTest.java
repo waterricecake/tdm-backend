@@ -4,8 +4,10 @@ import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import tdm.tdmbackend.global.DtoCreater;
@@ -15,6 +17,7 @@ import tdm.tdmbackend.post.dto.request.PostCreateRequest;
 public class PostIntegrationTest extends IntegrationTest {
 
     @Test
+    @DisplayName("게시물을 생성한다")
     void create() {
         // given
         PostCreateRequest request = DtoCreater.create(
@@ -31,8 +34,7 @@ public class PostIntegrationTest extends IntegrationTest {
                 .contentType(JSON)
                 .body(request)
                 .when().post("/posts")
-                .then()
-                .log().all()
+                .then().log().all()
                 .extract();
 
         // then
@@ -40,6 +42,32 @@ public class PostIntegrationTest extends IntegrationTest {
                 softly -> {
                     softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
                     softly.assertThat(response.header("Location")).contains("/posts/");
+                }
+        );
+    }
+
+    @Test
+    @DisplayName("단일 게시물에 조회한다")
+    void read(){
+        // when
+        JsonPath response = RestAssured
+                .given().log().all()
+                .when().get("/posts/{postId}",1L)
+                .then().log().all()
+                .extract()
+                .body()
+                .jsonPath();
+
+        // then
+        assertSoftly(
+                softly->{
+                    softly.assertThat(response.getLong("id")).isEqualTo(1L);
+                    softly.assertThat(response.getString("title")).isEqualTo("test1");
+                    softly.assertThat(response.getString("content")).isEqualTo("content");
+                    softly.assertThat(response.getList("tags")).hasSize(3);
+                    softly.assertThat(response.getList("images")).hasSize(2);
+                    softly.assertThat(response.getMap("author")).containsEntry("id",1L);
+                    softly.assertThat(response.getList("comments")).hasSize(2);
                 }
         );
     }
