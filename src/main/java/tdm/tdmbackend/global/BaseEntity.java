@@ -31,4 +31,8 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     @Enumerated(value = STRING)
     private StatusType status;
+
+    protected BaseEntity(final StatusType status){
+        this.status = status;
+    }
 }

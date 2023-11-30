@@ -1,10 +1,9 @@
 package tdm.tdmbackend.global;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
-@ExtendWith(MockitoExtension.class)
+@DataJpaTest
 @Sql(
         value = {
                 "classpath:testdata/truncate.sql",
@@ -13,10 +12,10 @@ import org.springframework.test.context.jdbc.Sql;
                 "classpath:testdata/post.sql",
                 "classpath:testdata/post_tag.sql",
                 "classpath:testdata/member_tag.sql",
-                "classpath:testdata/image.sql"
+                "classpath:testdata/image.sql",
+                "classpath:testdata/comment.sql"
 
         }
 )
 public abstract class ServiceTest {
-
 }

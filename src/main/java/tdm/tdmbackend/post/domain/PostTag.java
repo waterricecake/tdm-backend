@@ -1,9 +1,9 @@
 package tdm.tdmbackend.post.domain;
 
-import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+import static tdm.tdmbackend.global.type.StatusType.USABLE;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,11 +24,22 @@ public class PostTag extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY, cascade = REMOVE)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @ManyToOne(fetch = LAZY, cascade = REMOVE)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    private PostTag(final Long id, final Post post, final Tag tag) {
+        super(USABLE);
+        this.id = id;
+        this.post = post;
+        this.tag = tag;
+    }
+
+    public static PostTag of(final Post post, final Tag tag) {
+        return new PostTag(null, post, tag);
+    }
 }
