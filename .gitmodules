@@ -1,0 +1,3 @@
+[submodule "tdm-submodule"]
+	path = tdm-submodule
+	url = https://github.com/waterricecake/tdm-submodule.git
