@@ -52,7 +52,7 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public static Post of(Member member, String title, String content) {
+    public static Post of(final Member member, final String title, final String content) {
         return new Post(null, member, title, content);
     }
 

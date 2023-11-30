@@ -21,7 +21,7 @@ import tdm.tdmbackend.member.repository.MemberRepository;
                 "classpath:testdata/post_tag.sql",
                 "classpath:testdata/member_tag.sql",
                 "classpath:testdata/image.sql",
-                "classpath:testdata/content.sql"
+                "classpath:testdata/comment.sql"
 
         }
 )

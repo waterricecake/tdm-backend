@@ -1,7 +1,7 @@
 package tdm.tdmbackend.global;
 
 public class TestException extends RuntimeException{
-    public TestException(String message) {
+    public TestException(final String message) {
         super(message);
     }
 }

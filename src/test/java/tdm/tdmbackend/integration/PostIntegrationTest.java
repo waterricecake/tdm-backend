@@ -20,7 +20,7 @@ public class PostIntegrationTest extends IntegrationTest {
     @DisplayName("게시물을 생성한다")
     void create() {
         // given
-        PostCreateRequest request = DtoCreater.create(
+        final PostCreateRequest request = DtoCreater.create(
                 PostCreateRequest.class,
                 "testTitle",
                 "testContent",
@@ -29,7 +29,7 @@ public class PostIntegrationTest extends IntegrationTest {
         );
 
         // when
-        ExtractableResponse response = RestAssured
+        final ExtractableResponse response = RestAssured
                 .given().log().all()
                 .contentType(JSON)
                 .body(request)
@@ -50,7 +50,7 @@ public class PostIntegrationTest extends IntegrationTest {
     @DisplayName("단일 게시물에 조회한다")
     void read(){
         // when
-        JsonPath response = RestAssured
+        final JsonPath response = RestAssured
                 .given().log().all()
                 .when().get("/posts/{postId}",1L)
                 .then().log().all()
@@ -66,7 +66,7 @@ public class PostIntegrationTest extends IntegrationTest {
                     softly.assertThat(response.getString("content")).isEqualTo("content");
                     softly.assertThat(response.getList("tags")).hasSize(3);
                     softly.assertThat(response.getList("images")).hasSize(2);
-                    softly.assertThat(response.getMap("author")).containsEntry("id",1L);
+                    softly.assertThat(response.getMap("author")).containsEntry("id",1);
                     softly.assertThat(response.getList("comments")).hasSize(2);
                 }
         );

@@ -29,7 +29,7 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = LAZY, cascade = REMOVE)
     @JoinColumn(name = "member_id", nullable = false)
-    private Member memberId;
+    private Member member;
 
     @ManyToOne(fetch = LAZY, cascade = REMOVE)
     @JoinColumn(name = "post_id", nullable = false)
