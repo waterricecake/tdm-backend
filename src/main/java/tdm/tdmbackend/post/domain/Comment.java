@@ -1,4 +1,4 @@
-package tdm.tdmbackend.comment.domain;
+package tdm.tdmbackend.post.domain;
 
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tdm.tdmbackend.global.BaseEntity;
 import tdm.tdmbackend.member.domain.Member;
-import tdm.tdmbackend.post.domain.Post;
 
 @Entity
 @Getter

@@ -3,8 +3,8 @@ package tdm.tdmbackend.post.dto.response;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import tdm.tdmbackend.comment.domain.Comment;
-import tdm.tdmbackend.image.domain.Image;
+import tdm.tdmbackend.post.domain.Comment;
+import tdm.tdmbackend.post.domain.Image;
 import tdm.tdmbackend.post.domain.Post;
 import tdm.tdmbackend.post.domain.PostTag;
 
@@ -33,7 +33,7 @@ public class PostDetailResponse {
                 .map(postTag -> postTag.getTag().getId())
                 .toList();
         final List<String> imageUrls = images.stream()
-                .map(Image::getUrl)
+                .map(Image::getName)
                 .toList();
         return new PostDetailResponse(
                 post.getId(),

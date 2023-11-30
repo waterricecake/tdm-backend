@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class PostCreateRequest {
+public class PostRequest {
 
     @NotNull
     private String title;

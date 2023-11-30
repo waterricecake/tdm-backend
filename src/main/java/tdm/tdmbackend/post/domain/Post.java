@@ -1,5 +1,7 @@
 package tdm.tdmbackend.post.domain;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -13,7 +15,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import lombok.Builder;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tdm.tdmbackend.global.BaseEntity;
@@ -22,7 +25,6 @@ import tdm.tdmbackend.member.domain.Member;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@Builder
 public class Post extends BaseEntity {
 
     @Id
@@ -39,6 +41,12 @@ public class Post extends BaseEntity {
     @Lob
     @Column(nullable = false)
     private String content;
+
+    @OneToMany(mappedBy = "post", cascade = {PERSIST, REMOVE, MERGE})
+    private List<Image> images;
+
+    @OneToMany(mappedBy = "post", cascade = {PERSIST, REMOVE, MERGE})
+    private List<PostTag> postTags;
 
     private Post(
             final Long id,
@@ -58,5 +66,21 @@ public class Post extends BaseEntity {
 
     public static Post from(final Long postId) {
         return new Post(postId, null, null, null);
+    }
+
+    public void updateTitle(final String title) {
+        this.title = title;
+    }
+
+    public void updateContent(final String content) {
+        this.content = content;
+    }
+
+    public void updateImages(final List<Image> images) {
+        this.images = images;
+    }
+
+    public void updatePostTags(final List<PostTag> postTags) {
+        this.postTags = postTags;
     }
 }

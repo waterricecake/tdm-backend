@@ -1,9 +1,9 @@
-package tdm.tdmbackend.image.domain;
+package tdm.tdmbackend.post.domain;
 
-import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+import static tdm.tdmbackend.global.type.StatusType.USABLE;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tdm.tdmbackend.global.BaseEntity;
-import tdm.tdmbackend.post.domain.Post;
 
 @Entity
 @Getter
@@ -25,10 +24,21 @@ public class Image extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY, cascade = REMOVE)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Column(nullable = false)
-    private String url;
+    private String name;
+
+    public Image(final Long id, final Post post, final String name) {
+        super(USABLE);
+        this.id = id;
+        this.post = post;
+        this.name = name;
+    }
+
+    public static Image of(final Post post, final String name) {
+        return new Image(null, post, name);
+    }
 }
