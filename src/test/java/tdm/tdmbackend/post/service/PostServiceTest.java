@@ -11,6 +11,7 @@ import tdm.tdmbackend.global.DtoCreater;
 import tdm.tdmbackend.global.ServiceTest;
 import tdm.tdmbackend.post.domain.Image;
 import tdm.tdmbackend.post.domain.Post;
+import tdm.tdmbackend.post.domain.PostTag;
 import tdm.tdmbackend.post.dto.request.PostRequest;
 import tdm.tdmbackend.post.dto.response.PostDetailResponse;
 import tdm.tdmbackend.post.repository.ImageRepository;
@@ -118,6 +119,28 @@ class PostServiceTest extends ServiceTest {
                     softly.assertThat(post.getContent()).isEqualTo(request.getContent());
                     softly.assertThat(images).containsExactlyInAnyOrderElementsOf(request.getImages());
                     softly.assertThat(postTags).containsExactlyInAnyOrderElementsOf(request.getTags());
+                }
+        );
+    }
+
+    @Test
+    @DisplayName("게시물을 삭제한다")
+    void delete() {
+        // when
+        postService.delete(1L);
+        final List<PostTag> postTags = postTagRepository.findAll().stream()
+                .filter(postTag -> postTag.getPost().getId().equals(1L))
+                .toList();
+        final List<Image> images = imageRepository.findAll().stream()
+                .filter(image -> image.getPost().getId().equals(1L))
+                .toList();
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThatThrownBy(() -> postRepository.findById(1L).orElseThrow());
+                    softly.assertThat(postTags).hasSize(0);
+                    softly.assertThat(images).hasSize(0);
                 }
         );
     }

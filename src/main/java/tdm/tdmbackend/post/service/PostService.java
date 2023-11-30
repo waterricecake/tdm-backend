@@ -30,10 +30,10 @@ public class PostService {
     private final CommentRepository commentRepository;
 
     public Long create(PostRequest postRequest, Long memberId) {
-        Member member = memberRepository.findById(memberId)
+        final Member member = memberRepository.findById(memberId)
                 .orElseThrow(IllegalAccessError::new);
-        Post savePost = Post.of(member, postRequest.getTitle(), postRequest.getContent());
-        Post post = postRepository.save(savePost);
+        final Post savePost = Post.of(member, postRequest.getTitle(), postRequest.getContent());
+        final Post post = postRepository.save(savePost);
         postTagRepository.saveAll(
                 postRequest.getTags().stream()
                         .map(tagId -> PostTag.of(Post.from(post.getId()), Tag.from(tagId)))
@@ -56,19 +56,26 @@ public class PostService {
     }
 
     public void update(final PostRequest postRequest, final Long postId) {
-        Post post = postRepository.findById(postId)
+        final Post post = postRepository.findById(postId)
                 .orElseThrow();
         post.updateTitle(postRequest.getTitle());
         post.updateContent(postRequest.getContent());
         final List<Image> images = postRequest.getImages().stream()
                 .map(name -> Image.of(post, name))
                 .toList();
-        imageRepository.deleteAllByPost(post);
+        imageRepository.deleteAllByPostId(postId);
         post.updateImages(images);
         final List<PostTag> postTags = postRequest.getTags().stream()
                 .map(tagId -> PostTag.of(post, Tag.from(tagId)))
                 .toList();
-        postTagRepository.deleteAllByPost(post);
+        postTagRepository.deleteAllByPostId(postId);
         post.updatePostTags(postTags);
+    }
+
+    public void delete(final Long postId) {
+        imageRepository.deleteAllByPostId(postId);
+        postTagRepository.deleteAllByPostId(postId);
+        commentRepository.deleteCommentsByPostId(postId);
+        postRepository.deleteById(postId);
     }
 }

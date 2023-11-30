@@ -97,4 +97,18 @@ public class PostIntegrationTest extends IntegrationTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
+
+    @Test
+    @DisplayName("게시물을 삭제한다")
+    void delete(){
+        // when
+        final ExtractableResponse response = RestAssured
+                .given().log().all()
+                .when().delete("/posts/{postId}", 1)
+                .then().log().all()
+                .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 }
