@@ -100,7 +100,7 @@ public class PostIntegrationTest extends IntegrationTest {
 
     @Test
     @DisplayName("게시물을 삭제한다")
-    void delete(){
+    void delete() {
         // when
         final ExtractableResponse response = RestAssured
                 .given().log().all()
