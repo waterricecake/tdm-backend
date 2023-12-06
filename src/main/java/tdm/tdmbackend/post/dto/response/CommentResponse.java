@@ -7,9 +7,10 @@ import tdm.tdmbackend.post.domain.Comment;
 @RequiredArgsConstructor
 @Getter
 public class CommentResponse {
+
     private final Long id;
     private final String content;
-    private final AuthorResponse member;
+    private final AuthorResponse author;
 
     public static CommentResponse from(final Comment comment) {
         return new CommentResponse(

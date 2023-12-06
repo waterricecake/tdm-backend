@@ -30,4 +30,18 @@ public class CommentService {
         final Comment comment = commentRepository.save(Comment.of(member, post, request.getContent()));
         return CommentResponse.from(comment);
     }
+
+    public CommentResponse update(
+            final CommentRequest request,
+            final Long commentId
+    ) {
+        final Comment comment = commentRepository.findById(commentId)
+                .orElseThrow();
+        comment.updateContent(request.getContent());
+        return CommentResponse.from(comment);
+    }
+
+    public void delete(final Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 }

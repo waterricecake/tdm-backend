@@ -16,11 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tdm.tdmbackend.post.dto.request.CommentRequest;
 import tdm.tdmbackend.post.dto.request.PostRequest;
-import tdm.tdmbackend.post.dto.response.CommentResponse;
 import tdm.tdmbackend.post.dto.response.PostDetailResponse;
-import tdm.tdmbackend.post.service.CommentService;
 import tdm.tdmbackend.post.service.PostService;
 
 @Tag(name = "Post API", description = "게시물 생성, 조회, 수정 삭제 API")
@@ -30,7 +27,6 @@ import tdm.tdmbackend.post.service.PostService;
 public class PostController {
 
     private final PostService postService;
-    private final CommentService commentService;
 
     @Operation(summary = "게시물 생성")
     @PostMapping
@@ -62,18 +58,5 @@ public class PostController {
     public ResponseEntity<Void> delete(@PathVariable final Long postId) {
         postService.delete(postId);
         return ResponseEntity.noContent().build();
-    }
-
-    @Operation(summary = "댓글 작성")
-    @PostMapping("/{postId}/comments")
-    public ResponseEntity<CommentResponse> createComment(
-            @RequestBody final CommentRequest commentRequest,
-            @PathVariable final Long postId
-    ) {
-        // todo : 인가
-        final CommentResponse commentResponse = commentService.create(commentRequest, postId, 1L);
-        final URI located = URI.create("/posts/" + postId + "/comments/" + commentResponse.getId());
-        return ResponseEntity.created(located).body(commentResponse);
-
     }
 }
