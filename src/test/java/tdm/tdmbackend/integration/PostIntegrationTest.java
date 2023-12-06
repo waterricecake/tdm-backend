@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import tdm.tdmbackend.global.DtoCreater;
 import tdm.tdmbackend.global.IntegrationTest;
+import tdm.tdmbackend.post.dto.request.CommentRequest;
 import tdm.tdmbackend.post.dto.request.PostRequest;
 
 public class PostIntegrationTest extends IntegrationTest {
@@ -110,5 +111,33 @@ public class PostIntegrationTest extends IntegrationTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("댓글을 작성한다")
+    void createComment(){
+        // given
+        final CommentRequest commentRequest = DtoCreater.create(
+                CommentRequest.class,
+                "content"
+        );
+        final String uri = "/posts/" + 1L + "/comments";
+
+        // when
+        final ExtractableResponse response = RestAssured
+                .given().log().all()
+                .contentType(JSON)
+                .body(commentRequest)
+                .when().post(uri)
+                .then().log().all()
+                .extract();
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+                    softly.assertThat(response.header("Location")).contains("/posts/","/comments");
+                }
+        );
     }
 }
