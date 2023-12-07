@@ -83,4 +83,11 @@ public class Post extends BaseEntity {
     public void updatePostTags(final List<PostTag> postTags) {
         this.postTags = postTags;
     }
+
+    public String getFirstImageUrl() {
+        if (images.isEmpty()) {
+            return null;
+        }
+        return images.get(0).getName();
+    }
 }

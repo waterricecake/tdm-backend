@@ -3,6 +3,7 @@ package tdm.tdmbackend.post.service;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tdm.tdmbackend.member.domain.Member;
 import tdm.tdmbackend.member.repository.MemberRepository;
@@ -12,6 +13,7 @@ import tdm.tdmbackend.post.domain.Post;
 import tdm.tdmbackend.post.domain.PostTag;
 import tdm.tdmbackend.post.dto.request.PostRequest;
 import tdm.tdmbackend.post.dto.response.PostDetailResponse;
+import tdm.tdmbackend.post.dto.response.PostResponse;
 import tdm.tdmbackend.post.repository.CommentRepository;
 import tdm.tdmbackend.post.repository.ImageRepository;
 import tdm.tdmbackend.post.repository.PostRepository;
@@ -77,5 +79,12 @@ public class PostService {
         postTagRepository.deleteAllByPostId(postId);
         commentRepository.deleteCommentsByPostId(postId);
         postRepository.deleteById(postId);
+    }
+
+    public List<PostResponse> getPosts(Pageable pageable){
+        List<Post> posts = postRepository.findPostsBy(pageable);
+        return posts.stream()
+                .map(PostResponse::from)
+                .toList();
     }
 }

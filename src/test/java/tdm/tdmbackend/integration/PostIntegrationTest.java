@@ -111,4 +111,23 @@ public class PostIntegrationTest extends IntegrationTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
+
+    @Test
+    @DisplayName("메인페이지에서 게시물을 조회한다")
+    void readPosts() {
+        // when
+        final ExtractableResponse response = RestAssured
+                .given().log().all()
+                .when().get("/posts?page=0&size=3")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                    softly.assertThat(response.jsonPath().getList("posts")).hasSize(3);
+                }
+        );
+    }
 }
