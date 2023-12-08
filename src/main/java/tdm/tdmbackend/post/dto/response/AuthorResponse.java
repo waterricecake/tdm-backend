@@ -13,7 +13,7 @@ public class AuthorResponse {
     private final String name;
     private final String profile;
     private final String school;
-    private final Long level;
+    private final Long grade;
 
     public static AuthorResponse from(final Member member) {
         return new AuthorResponse(
@@ -21,7 +21,7 @@ public class AuthorResponse {
                 member.getNickname(),
                 member.getProfile(),
                 member.getSchool(),
-                member.getLevel()
+                member.getGrade()
         );
     }
 }

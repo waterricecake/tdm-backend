@@ -37,7 +37,7 @@ public class MyPageResponse {
                 member.getProfile(),
                 member.getNickname(),
                 member.getSchool(),
-                member.getLevel(),
+                member.getGrade(),
                 tagNames,
                 postResponses
         );

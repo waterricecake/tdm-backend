@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tdm.tdmbackend.member.domain.Member;
+import tdm.tdmbackend.member.dto.request.SchoolRequest;
 import tdm.tdmbackend.member.dto.response.MyPageResponse;
 import tdm.tdmbackend.member.repository.MemberRepository;
 import tdm.tdmbackend.post.domain.Post;
@@ -27,5 +28,12 @@ public class MemberService {
         List<Post> posts = postRepository.findPostsByMember(member);
         List<Tag> tags = tagRepository.findTagsByMemberId(memberId);
         return MyPageResponse.of(member, posts, tags);
+    }
+
+    public void updateSchoolInfo(final Long memberId, final SchoolRequest schoolRequest){
+        final Member member = memberRepository.findById(memberId)
+                .orElseThrow();
+        member.updateSchool(schoolRequest.getSchool());
+        member.updateGrade(schoolRequest.getGrade());
     }
 }

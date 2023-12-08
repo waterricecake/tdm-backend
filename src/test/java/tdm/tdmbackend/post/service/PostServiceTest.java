@@ -84,7 +84,7 @@ class PostServiceTest extends ServiceTest {
                     softly.assertThat(response.getAuthor().getName()).isEqualTo("name");
                     softly.assertThat(response.getAuthor().getProfile()).isEqualTo("https://profile.jpg");
                     softly.assertThat(response.getAuthor().getSchool()).isEqualTo("school");
-                    softly.assertThat(response.getAuthor().getLevel()).isEqualTo(1L);
+                    softly.assertThat(response.getAuthor().getGrade()).isEqualTo(1L);
                     softly.assertThat(response.getComments()).hasSize(2);
                 }
         );

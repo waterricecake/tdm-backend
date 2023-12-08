@@ -1,12 +1,18 @@
 package tdm.tdmbackend.integration;
 
+import static io.restassured.http.ContentType.JSON;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import io.restassured.response.ExtractableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import tdm.tdmbackend.global.DtoCreater;
 import tdm.tdmbackend.global.IntegrationTest;
+import tdm.tdmbackend.member.dto.request.SchoolRequest;
 
 class MyPageIntegrationTest extends IntegrationTest {
 
@@ -34,5 +40,28 @@ class MyPageIntegrationTest extends IntegrationTest {
                     softly.assertThat(response.getList("posts")).hasSize(6);
                 }
         );
+    }
+
+    @Test
+    @DisplayName("학교 정보 및 학년 정보 수정한다")
+    void updateSchool() {
+        // given
+        final SchoolRequest request = DtoCreater.create(
+                SchoolRequest.class,
+                "updateSchool",
+                2L
+        );
+
+        // when
+        final ExtractableResponse response = RestAssured
+                .given().log().all()
+                .contentType(JSON)
+                .body(request)
+                .when().put("/mypage/school")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }
