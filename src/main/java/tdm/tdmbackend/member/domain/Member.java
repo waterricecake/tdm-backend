@@ -34,7 +34,7 @@ public class Member extends BaseEntity {
     private String school;
 
     @Column(nullable = false)
-    private Long level;
+    private Long grade;
 
     private Member(
             final Long id,
@@ -42,7 +42,7 @@ public class Member extends BaseEntity {
             final String profile,
             final String socialId,
             final String school,
-            final Long level
+            final Long grade
     ) {
         super(USABLE);
         this.id = id;
@@ -50,16 +50,28 @@ public class Member extends BaseEntity {
         this.profile = profile;
         this.socialId = socialId;
         this.school = school;
-        this.level = level;
+        this.grade = grade;
     }
 
-    public static Member from(
+    public static Member of(
             final String nickname,
             final String profile,
             final String socialId,
             final String school,
-            final Long level
+            final Long grade
     ) {
-        return new Member(null, nickname, profile, socialId, school, level);
+        return new Member(null, nickname, profile, socialId, school, grade);
+    }
+
+    public static Member from(final Long id) {
+        return new Member(id, null, null, null, null, null);
+    }
+
+    public void updateSchool(final String school) {
+        this.school = school;
+    }
+
+    public void updateGrade(final Long grade) {
+        this.grade = grade;
     }
 }
