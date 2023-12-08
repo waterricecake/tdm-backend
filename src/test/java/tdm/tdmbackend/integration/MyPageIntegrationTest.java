@@ -7,11 +7,13 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import tdm.tdmbackend.global.DtoCreater;
 import tdm.tdmbackend.global.IntegrationTest;
+import tdm.tdmbackend.member.dto.request.InterestRequest;
 import tdm.tdmbackend.member.dto.request.SchoolRequest;
 
 class MyPageIntegrationTest extends IntegrationTest {
@@ -58,6 +60,28 @@ class MyPageIntegrationTest extends IntegrationTest {
                 .contentType(JSON)
                 .body(request)
                 .when().put("/mypage/school")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("관심사를 수정한다")
+    void updateInterest() {
+        // given
+        final InterestRequest request = DtoCreater.create(
+                InterestRequest.class,
+                List.of(1L, 2L)
+        );
+
+        // when
+        final ExtractableResponse response = RestAssured
+                .given().log().all()
+                .contentType(JSON)
+                .body(request)
+                .when().put("/mypage/interest")
                 .then().log().all()
                 .extract();
 

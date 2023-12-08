@@ -53,7 +53,7 @@ public class Member extends BaseEntity {
         this.grade = grade;
     }
 
-    public static Member from(
+    public static Member of(
             final String nickname,
             final String profile,
             final String socialId,
@@ -61,6 +61,10 @@ public class Member extends BaseEntity {
             final Long grade
     ) {
         return new Member(null, nickname, profile, socialId, school, grade);
+    }
+
+    public static Member from(final Long id) {
+        return new Member(id, null, null, null, null, null);
     }
 
     public void updateSchool(final String school) {

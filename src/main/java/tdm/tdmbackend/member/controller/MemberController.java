@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tdm.tdmbackend.member.dto.request.InterestRequest;
 import tdm.tdmbackend.member.dto.request.SchoolRequest;
 import tdm.tdmbackend.member.dto.response.MyPageResponse;
 import tdm.tdmbackend.member.service.MemberService;
@@ -38,6 +39,16 @@ public class MemberController {
     ) {
         // todo: 인증 인가 필요
         memberService.updateSchoolInfo(1L, schoolRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "관심사 정보 수정")
+    @PutMapping("/interest")
+    public ResponseEntity<Void> updateInterest(
+            @RequestBody final InterestRequest interestRequest
+    ) {
+        // todo: 인증인가
+        memberService.updateInterests(1L, interestRequest);
         return ResponseEntity.noContent().build();
     }
 }
