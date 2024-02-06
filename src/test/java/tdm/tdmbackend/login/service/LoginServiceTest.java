@@ -49,7 +49,7 @@ class LoginServiceTest extends ServiceTest {
         final List<String> refreshTokens = refreshTokenRepository
                 .findAll()
                 .stream()
-                .map(RefreshToken::getRefreshToken)
+                .map(RefreshToken::getToken)
                 .toList();
 
         // then
@@ -72,7 +72,7 @@ class LoginServiceTest extends ServiceTest {
         final List<String> refreshTokens = refreshTokenRepository
                 .findAll()
                 .stream()
-                .map(RefreshToken::getRefreshToken)
+                .map(RefreshToken::getToken)
                 .toList();
         final List<String> memberSocialIds = memberRepository
                 .findAll()

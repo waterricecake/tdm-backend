@@ -1,5 +1,6 @@
 package tdm.tdmbackend.login.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tdm.tdmbackend.login.domain.MemberToken;
@@ -13,6 +14,7 @@ import tdm.tdmbackend.member.repository.MemberRepository;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class LoginService {
 
     private final JwtManager jwtManager;
@@ -37,10 +39,14 @@ public class LoginService {
         );
     }
 
-    public String reissueAccessToken(final String refreshToken, final String authorization){
+    public String reissueAccessToken(final String refreshToken, final String authorization) {
         final String accessToken = AccessTokenExtractor.extractAccessToken(authorization);
-        jwtManager.validateTokens(new MemberToken(accessToken,refreshToken));
+        jwtManager.validateTokens(new MemberToken(accessToken, refreshToken));
         final String memberId = jwtManager.parseSubject(refreshToken);
         return jwtManager.createReissueAccessToken(memberId);
+    }
+
+    public void logout(final String refreshToken) {
+        refreshTokenRepository.deleteRefreshTokenByToken(refreshToken);
     }
 }

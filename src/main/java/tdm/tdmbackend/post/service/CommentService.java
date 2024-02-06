@@ -1,8 +1,8 @@
 package tdm.tdmbackend.post.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tdm.tdmbackend.member.domain.Member;
 import tdm.tdmbackend.member.repository.MemberRepository;
 import tdm.tdmbackend.post.domain.Comment;

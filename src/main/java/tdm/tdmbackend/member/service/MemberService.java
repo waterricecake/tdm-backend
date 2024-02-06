@@ -1,9 +1,9 @@
 package tdm.tdmbackend.member.service;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tdm.tdmbackend.member.domain.Member;
 import tdm.tdmbackend.member.domain.MemberTag;
 import tdm.tdmbackend.member.dto.request.InterestRequest;
@@ -26,6 +26,7 @@ public class MemberService {
     private final TagRepository tagRepository;
     private final MemberTagRepository memberTagRepository;
 
+    @Transactional(readOnly = true)
     public MyPageResponse getMyPage(final Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow();

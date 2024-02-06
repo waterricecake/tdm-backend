@@ -1,6 +1,6 @@
 package tdm.tdmbackend.post.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +31,7 @@ public class PostService {
     private final ImageRepository imageRepository;
     private final CommentRepository commentRepository;
 
-    public Long create(PostRequest postRequest, Long memberId) {
+    public Long create(final PostRequest postRequest, final Long memberId) {
         final Member member = memberRepository.findById(memberId)
                 .orElseThrow(IllegalAccessError::new);
         final Post savePost = Post.of(member, postRequest.getTitle(), postRequest.getContent());
@@ -48,7 +48,9 @@ public class PostService {
         return post.getId();
     }
 
+    @Transactional(readOnly = true)
     public PostDetailResponse read(final Long postId) {
+        // todo : 예외처리
         final Post post = postRepository.findById(postId)
                 .orElseThrow();
         final List<PostTag> tags = postTagRepository.findPostTagsByPost(post);
@@ -81,6 +83,7 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
+    @Transactional(readOnly = true)
     public List<PostResponse> getPosts(Pageable pageable){
         List<Post> posts = postRepository.findPostsBy(pageable);
         return posts.stream()
