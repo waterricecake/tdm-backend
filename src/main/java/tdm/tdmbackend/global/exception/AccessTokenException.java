@@ -7,12 +7,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = PRIVATE)
 @Getter
-public class BadRequestException extends CustomException{
-
+public class AccessTokenException extends CustomException{
     private final int errorCode;
     private final String errorMessage;
 
-    public static BadRequestException from(final ExceptionCode exceptionCode){
-        return new BadRequestException(exceptionCode.getErrorCode(),exceptionCode.getErrorMessage());
+    public static AccessTokenException of(final ExceptionCode exceptionCode){
+        return new AccessTokenException(exceptionCode.getErrorCode(), exceptionCode.getErrorMessage());
     }
 }

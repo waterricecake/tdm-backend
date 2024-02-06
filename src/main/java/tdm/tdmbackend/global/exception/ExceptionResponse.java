@@ -12,7 +12,7 @@ public class ExceptionResponse {
     private final int code;
     private final String errorMessage;
 
-    public static ExceptionResponse fromBadRequest(final BadRequestException exception){
-        return new ExceptionResponse(exception.getCode(), exception.getErrorMessage());
+    public static ExceptionResponse from(final CustomException exception){
+        return new ExceptionResponse(exception.getErrorCode(),exception.getErrorMessage());
     }
 }

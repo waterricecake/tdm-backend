@@ -86,7 +86,7 @@ public class LoginIntegrationTest extends IntegrationTest {
 
     @Test
     @DisplayName("로그아웃")
-    void logout(){
+    void logout() {
         // when
         final ValidatableResponse response = requestLogin()
                 .when().delete("/auth/logout")
