@@ -1,6 +1,5 @@
 package tdm.tdmbackend.post.controller;
 
-import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +19,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tdm.tdmbackend.auth.Auth;
+import tdm.tdmbackend.auth.MemberOnly;
+import tdm.tdmbackend.auth.domain.Accessor;
 import tdm.tdmbackend.post.dto.request.PostRequest;
 import tdm.tdmbackend.post.dto.response.PostDetailResponse;
 import tdm.tdmbackend.post.dto.response.PostResponse;
@@ -27,7 +29,7 @@ import tdm.tdmbackend.post.service.PostService;
 
 @Tag(name = "Post API", description = "게시물 생성, 조회, 수정 삭제 API")
 @RestController
-@RequiredArgsConstructor(access = PRIVATE)
+@RequiredArgsConstructor
 @RequestMapping("/posts")
 public class PostController {
 
@@ -35,9 +37,12 @@ public class PostController {
 
     @Operation(summary = "게시물 생성")
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody final PostRequest postRequest) {
-        // todo: 인가 필요
-        final Long postId = postService.create(postRequest, 1L);
+    @MemberOnly
+    public ResponseEntity<Void> create(
+            @Auth Accessor accessor,
+            @Valid @RequestBody final PostRequest postRequest
+    ) {
+        final Long postId = postService.create(postRequest, accessor.getMemberId());
         return ResponseEntity.created(URI.create("/posts/" + postId)).build();
     }
 
@@ -50,7 +55,9 @@ public class PostController {
 
     @Operation(summary = "게시물 수정")
     @PutMapping("/{postId}")
+    @MemberOnly
     public ResponseEntity<Void> update(
+            @Auth Accessor accessor,
             @Valid @RequestBody final PostRequest postRequest,
             @PathVariable final Long postId
     ) {
@@ -60,7 +67,11 @@ public class PostController {
 
     @Operation(summary = "게시물 삭제")
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> delete(@PathVariable final Long postId) {
+    @MemberOnly
+    public ResponseEntity<Void> delete(
+            @Auth Accessor accessor,
+            @PathVariable final Long postId
+    ) {
         postService.delete(postId);
         return ResponseEntity.noContent().build();
     }

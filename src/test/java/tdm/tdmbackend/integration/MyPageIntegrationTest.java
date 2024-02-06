@@ -1,10 +1,8 @@
 package tdm.tdmbackend.integration;
 
-import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import java.util.List;
@@ -22,8 +20,7 @@ class MyPageIntegrationTest extends IntegrationTest {
     @DisplayName("내 페이지에 조회한다")
     void getMyPage() {
         // when
-        final JsonPath response = RestAssured
-                .given().log().all()
+        final JsonPath response = requestLogin()
                 .when().get("/mypage")
                 .then().log().all()
                 .extract()
@@ -55,9 +52,7 @@ class MyPageIntegrationTest extends IntegrationTest {
         );
 
         // when
-        final ExtractableResponse response = RestAssured
-                .given().log().all()
-                .contentType(JSON)
+        final ExtractableResponse response = requestLogin()
                 .body(request)
                 .when().put("/mypage/school")
                 .then().log().all()
@@ -77,9 +72,7 @@ class MyPageIntegrationTest extends IntegrationTest {
         );
 
         // when
-        final ExtractableResponse response = RestAssured
-                .given().log().all()
-                .contentType(JSON)
+        final ExtractableResponse response = requestLogin()
                 .body(request)
                 .when().put("/mypage/interest")
                 .then().log().all()

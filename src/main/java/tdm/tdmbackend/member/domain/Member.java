@@ -30,10 +30,8 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String socialId;
 
-    @Column(nullable = false)
     private String school;
 
-    @Column(nullable = false)
     private Long grade;
 
     private Member(
@@ -56,11 +54,9 @@ public class Member extends BaseEntity {
     public static Member of(
             final String nickname,
             final String profile,
-            final String socialId,
-            final String school,
-            final Long grade
+            final String socialId
     ) {
-        return new Member(null, nickname, profile, socialId, school, grade);
+        return new Member(null, nickname, profile, socialId, null, null);
     }
 
     public static Member from(final Long id) {

@@ -1,10 +1,8 @@
 package tdm.tdmbackend.integration;
 
-import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -27,9 +25,7 @@ public class CommentIntegrationTest extends IntegrationTest {
         final String uri = "/comments/posts/" + 1L;
 
         // when
-        final ExtractableResponse response = RestAssured
-                .given().log().all()
-                .contentType(JSON)
+        final ExtractableResponse response = requestLogin()
                 .body(commentRequest)
                 .when().post(uri)
                 .then().log().all()
@@ -55,9 +51,7 @@ public class CommentIntegrationTest extends IntegrationTest {
         final String uri = "/comments/" + 1L;
 
         // when
-        final JsonPath response = RestAssured
-                .given().log().all()
-                .contentType(JSON)
+        final JsonPath response = requestLogin()
                 .body(commentRequest)
                 .when().put(uri)
                 .then().log().all()
@@ -81,7 +75,7 @@ public class CommentIntegrationTest extends IntegrationTest {
         final String uri = "/comments/" + 1L;
 
         // when
-        final ExtractableResponse response = RestAssured
+        final ExtractableResponse response = requestLogin()
                 .given().log().all()
                 .when().delete(uri)
                 .then().log().all()
