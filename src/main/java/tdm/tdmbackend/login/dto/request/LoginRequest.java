@@ -1,4 +1,4 @@
-package tdm.tdmbackend.jwt.dto.request;
+package tdm.tdmbackend.login.dto.request;
 
 import static lombok.AccessLevel.PROTECTED;
 

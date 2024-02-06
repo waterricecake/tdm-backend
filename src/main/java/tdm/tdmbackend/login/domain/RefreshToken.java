@@ -1,4 +1,4 @@
-package tdm.tdmbackend.jwt.domain;
+package tdm.tdmbackend.login.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;

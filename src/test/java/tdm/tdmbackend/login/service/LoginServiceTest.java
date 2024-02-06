@@ -1,4 +1,4 @@
-package tdm.tdmbackend.jwt.service;
+package tdm.tdmbackend.login.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import tdm.tdmbackend.global.DtoCreater;
 import tdm.tdmbackend.global.ServiceTest;
-import tdm.tdmbackend.jwt.domain.MemberToken;
-import tdm.tdmbackend.jwt.domain.RefreshToken;
-import tdm.tdmbackend.jwt.dto.request.LoginRequest;
-import tdm.tdmbackend.jwt.repository.RefreshTokenRepository;
-import tdm.tdmbackend.jwt.util.JwtProvider;
+import tdm.tdmbackend.login.domain.MemberToken;
+import tdm.tdmbackend.login.domain.RefreshToken;
+import tdm.tdmbackend.login.dto.request.LoginRequest;
+import tdm.tdmbackend.login.repository.RefreshTokenRepository;
+import tdm.tdmbackend.login.util.JwtManager;
 
-@Import({LoginService.class, JwtProvider.class})
+@Import({LoginService.class, JwtManager.class})
 class LoginServiceTest extends ServiceTest {
 
     @Autowired

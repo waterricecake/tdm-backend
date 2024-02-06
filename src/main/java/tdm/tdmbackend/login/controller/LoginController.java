@@ -1,4 +1,4 @@
-package tdm.tdmbackend.jwt.controller;
+package tdm.tdmbackend.login.controller;
 
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tdm.tdmbackend.jwt.domain.MemberToken;
-import tdm.tdmbackend.jwt.dto.request.LoginRequest;
-import tdm.tdmbackend.jwt.dto.response.LoginResponse;
-import tdm.tdmbackend.jwt.service.LoginService;
+import tdm.tdmbackend.login.domain.MemberToken;
+import tdm.tdmbackend.login.dto.request.LoginRequest;
+import tdm.tdmbackend.login.dto.response.LoginResponse;
+import tdm.tdmbackend.login.service.LoginService;
 
 @RequiredArgsConstructor
 @RestController

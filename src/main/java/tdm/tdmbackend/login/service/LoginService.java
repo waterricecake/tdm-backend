@@ -1,12 +1,12 @@
-package tdm.tdmbackend.jwt.service;
+package tdm.tdmbackend.login.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tdm.tdmbackend.jwt.domain.MemberToken;
-import tdm.tdmbackend.jwt.domain.RefreshToken;
-import tdm.tdmbackend.jwt.dto.request.LoginRequest;
-import tdm.tdmbackend.jwt.repository.RefreshTokenRepository;
-import tdm.tdmbackend.jwt.util.JwtProvider;
+import tdm.tdmbackend.login.domain.MemberToken;
+import tdm.tdmbackend.login.domain.RefreshToken;
+import tdm.tdmbackend.login.dto.request.LoginRequest;
+import tdm.tdmbackend.login.repository.RefreshTokenRepository;
+import tdm.tdmbackend.login.util.JwtManager;
 import tdm.tdmbackend.member.domain.Member;
 import tdm.tdmbackend.member.repository.MemberRepository;
 
@@ -14,7 +14,7 @@ import tdm.tdmbackend.member.repository.MemberRepository;
 @Service
 public class LoginService {
 
-    private final JwtProvider jwtProvider;
+    private final JwtManager jwtManager;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -22,7 +22,7 @@ public class LoginService {
         if (!memberRepository.existsMemberBySocialId(request.getSocialId())) {
             signUp(request);
         }
-        final MemberToken memberToken = jwtProvider.createMemberToken(request.getSocialId());
+        final MemberToken memberToken = jwtManager.createMemberToken(request.getSocialId());
         refreshTokenRepository.save(RefreshToken.from(memberToken.getRefreshToken()));
         return memberToken;
     }

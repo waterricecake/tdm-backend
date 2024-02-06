@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import tdm.tdmbackend.global.DtoCreater;
 import tdm.tdmbackend.global.IntegrationTest;
-import tdm.tdmbackend.jwt.dto.request.LoginRequest;
+import tdm.tdmbackend.login.dto.request.LoginRequest;
 
 public class LoginIntegrationTest extends IntegrationTest {
 

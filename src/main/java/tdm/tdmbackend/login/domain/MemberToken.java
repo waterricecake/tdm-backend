@@ -1,4 +1,4 @@
-package tdm.tdmbackend.jwt.domain;
+package tdm.tdmbackend.login.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

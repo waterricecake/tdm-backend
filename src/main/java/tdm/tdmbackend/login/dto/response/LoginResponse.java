@@ -1,4 +1,4 @@
-package tdm.tdmbackend.jwt.dto.response;
+package tdm.tdmbackend.login.dto.response;
 
 import static lombok.AccessLevel.PRIVATE;
 
