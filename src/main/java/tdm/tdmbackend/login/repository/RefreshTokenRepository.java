@@ -5,5 +5,7 @@ import tdm.tdmbackend.login.domain.RefreshToken;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
-    Boolean existsRefreshTokenByRefreshToken(final String refreshToken);
+    Boolean existsRefreshTokenByToken(final String token);
+
+    void deleteRefreshTokenByToken(final String token);
 }

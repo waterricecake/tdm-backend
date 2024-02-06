@@ -22,15 +22,15 @@ public class RefreshToken extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String refreshToken;
+    private String token;
 
     private RefreshToken(
             final Long id,
-            final String refreshToken
+            final String token
     ) {
         super(USABLE);
         this.id = id;
-        this.refreshToken = refreshToken;
+        this.token = token;
     }
 
     public static RefreshToken from(final String refreshToken) {

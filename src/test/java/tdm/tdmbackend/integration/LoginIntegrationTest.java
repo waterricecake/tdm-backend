@@ -83,4 +83,18 @@ public class LoginIntegrationTest extends IntegrationTest {
                 .assertThat()
                 .body("accessToken", notNullValue());
     }
+
+    @Test
+    @DisplayName("로그아웃")
+    void logout(){
+        // when
+        final ValidatableResponse response = requestLogin()
+                .when().delete("/auth/logout")
+                .then().log().all();
+
+        // then
+        response
+                .assertThat()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }
