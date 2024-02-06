@@ -1,7 +1,5 @@
 package tdm.tdmbackend.post.controller;
 
-import static lombok.AccessLevel.PRIVATE;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
@@ -14,13 +12,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tdm.tdmbackend.auth.Auth;
+import tdm.tdmbackend.auth.MemberOnly;
+import tdm.tdmbackend.auth.domain.Accessor;
 import tdm.tdmbackend.post.dto.request.CommentRequest;
 import tdm.tdmbackend.post.dto.response.CommentResponse;
 import tdm.tdmbackend.post.service.CommentService;
 
 @Tag(name = "Comment API", description = "댓글 생성 수정 삭제 API")
 @RestController
-@RequiredArgsConstructor(access = PRIVATE)
+@RequiredArgsConstructor
 @RequestMapping("/comments")
 public class CommentController {
 
@@ -29,33 +30,36 @@ public class CommentController {
 
     @Operation(summary = "댓글 작성")
     @PostMapping("/posts/{postId}")
+    @MemberOnly
     public ResponseEntity<CommentResponse> createComment(
+            @Auth Accessor accessor,
             @RequestBody final CommentRequest commentRequest,
             @PathVariable final Long postId
     ) {
-        // todo : 인가
-        final CommentResponse commentResponse = commentService.create(commentRequest, postId, 1L);
+        final CommentResponse commentResponse = commentService.create(commentRequest, postId, accessor.getMemberId());
         final URI located = URI.create("/comments/" + commentResponse.getId());
         return ResponseEntity.created(located).body(commentResponse);
     }
 
     @Operation(summary = "댓글 수정")
     @PutMapping("/{commentId}")
+    @MemberOnly
     public ResponseEntity<CommentResponse> updateComment(
+            @Auth Accessor accessor,
             @RequestBody final CommentRequest commentRequest,
             @PathVariable final Long commentId
     ) {
-        // todo : 인가
         final CommentResponse commentResponse = commentService.update(commentRequest, commentId);
         return ResponseEntity.ok(commentResponse);
     }
 
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/{commentId}")
+    @MemberOnly
     public ResponseEntity<Void> deleteComment(
+            @Auth Accessor accessor,
             @PathVariable final Long commentId
     ) {
-        // todo : 인가
         commentService.delete(commentId);
         return ResponseEntity.noContent().build();
     }
