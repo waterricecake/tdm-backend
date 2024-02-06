@@ -4,9 +4,11 @@ import static lombok.AccessLevel.PRIVATE;
 import static tdm.tdmbackend.auth.domain.Authority.GUEST;
 import static tdm.tdmbackend.auth.domain.Authority.MEMBER;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = PRIVATE)
+@Getter
 public class Accessor {
 
     private final Long memberId;

@@ -17,7 +17,6 @@ import tdm.tdmbackend.auth.domain.Accessor;
 import tdm.tdmbackend.login.domain.MemberToken;
 import tdm.tdmbackend.login.repository.RefreshTokenRepository;
 import tdm.tdmbackend.login.util.JwtManager;
-import tdm.tdmbackend.member.repository.MemberRepository;
 
 @RequiredArgsConstructor
 @Component
@@ -38,9 +37,9 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
             ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
-    ){
-        final HttpServletRequest request =webRequest.getNativeRequest(HttpServletRequest.class);
-        if (request == null){
+    ) {
+        final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        if (request == null) {
             //예외처리
             throw new IllegalArgumentException();
         }
@@ -48,19 +47,19 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         try {
             final String accessToken = extractAccessToken(webRequest.getHeader(AUTHORIZATION));
             final String refreshToken = extractRefreshToken(request.getCookies());
-            final MemberToken memberToken = new MemberToken(accessToken,refreshToken);
+            final MemberToken memberToken = new MemberToken(accessToken, refreshToken);
             jwtManager.validateTokens(memberToken);
 
             final Long memberId = Long.parseLong(jwtManager.parseSubject(accessToken));
             return Accessor.member(memberId);
-            // todo : 예외처리
-        } catch (Exception e){
+            // todo : 예외처리 -> cookie에 값이 없거나 refreshToken이 기간이 지났을 경우
+        } catch (Exception e) {
             return Accessor.guest();
         }
     }
 
-    private String extractRefreshToken(final Cookie... cookies){
-        if (cookies == null){
+    private String extractRefreshToken(final Cookie... cookies) {
+        if (cookies == null) {
             // todo : 예외처리
             throw new IllegalArgumentException();
         }
@@ -72,14 +71,14 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
                 .getValue();
     }
 
-    private boolean isValidRefreshToken(final Cookie cookie){
+    private boolean isValidRefreshToken(final Cookie cookie) {
         return cookie.getName().equals("refresh-token")
                 && refreshTokenRepository.existsRefreshTokenByRefreshToken(cookie.getValue());
     }
 
-    private String extractAccessToken(final String header){
-        if (header != null && header.startsWith( "Bearer ")) {
-            return header.substring( "Bearer ".length()).trim();
+    private String extractAccessToken(final String header) {
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring("Bearer ".length()).trim();
         }
         // todo : 예외처리
         throw new IllegalArgumentException();

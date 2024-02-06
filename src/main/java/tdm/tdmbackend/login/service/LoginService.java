@@ -19,16 +19,15 @@ public class LoginService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public MemberToken login(final LoginRequest request) {
-        if (!memberRepository.existsMemberBySocialId(request.getSocialId())) {
-            signUp(request);
-        }
-        final MemberToken memberToken = jwtManager.createMemberToken(request.getSocialId());
+        Member member = memberRepository.findMemberBySocialId(request.getSocialId())
+                .orElseGet(() -> signUp(request));
+        final MemberToken memberToken = jwtManager.createMemberToken(member.getId().toString());
         refreshTokenRepository.save(RefreshToken.from(memberToken.getRefreshToken()));
         return memberToken;
     }
 
-    private void signUp(final LoginRequest request){
-        memberRepository.save(
+    private Member signUp(final LoginRequest request) {
+        return memberRepository.save(
                 Member.of(
                         request.getNickname(),
                         request.getProfile(),

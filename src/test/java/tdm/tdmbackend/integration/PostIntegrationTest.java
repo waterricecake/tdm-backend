@@ -1,6 +1,5 @@
 package tdm.tdmbackend.integration;
 
-import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -30,9 +29,7 @@ public class PostIntegrationTest extends IntegrationTest {
         );
 
         // when
-        final ExtractableResponse response = RestAssured
-                .given().log().all()
-                .contentType(JSON)
+        final ExtractableResponse response = requestLogin()
                 .body(request)
                 .when().post("/posts")
                 .then().log().all()
@@ -86,9 +83,7 @@ public class PostIntegrationTest extends IntegrationTest {
         );
 
         // when
-        final ExtractableResponse response = RestAssured
-                .given().log().all()
-                .contentType(JSON)
+        final ExtractableResponse response = requestLogin()
                 .body(request)
                 .when().put("/posts/{postId}", 1)
                 .then().log().all()
@@ -102,7 +97,7 @@ public class PostIntegrationTest extends IntegrationTest {
     @DisplayName("게시물을 삭제한다")
     void delete() {
         // when
-        final ExtractableResponse response = RestAssured
+        final ExtractableResponse response = requestLogin()
                 .given().log().all()
                 .when().delete("/posts/{postId}", 1)
                 .then().log().all()

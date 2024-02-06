@@ -12,7 +12,7 @@ import tdm.tdmbackend.auth.domain.Accessor;
 public class MemberOnlyChecker {
 
     @Before("@annotation(MemberOnly)")
-    public void check(final JoinPoint joinPoint){
+    public void check(final JoinPoint joinPoint) {
         Arrays.stream(joinPoint.getArgs())
                 .filter(Accessor.class::isInstance)
                 .map(Accessor.class::cast)
