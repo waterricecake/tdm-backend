@@ -1,15 +1,21 @@
 package tdm.tdmbackend.post.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import tdm.tdmbackend.global.DtoCreater;
 import tdm.tdmbackend.global.ServiceTest;
+import tdm.tdmbackend.global.exception.BadRequestException;
 import tdm.tdmbackend.member.domain.Member;
 import tdm.tdmbackend.member.dto.request.InterestRequest;
 import tdm.tdmbackend.member.dto.request.SchoolRequest;
@@ -49,6 +55,30 @@ class MyPageServiceTest extends ServiceTest {
                     softly.assertThat(expect.getSchool()).isEqualTo(request.getSchool());
                     softly.assertThat(expect.getGrade()).isEqualTo(request.getGrade());
                 }
+        );
+    }
+
+    @ParameterizedTest(name = "{0}일때 학교정보 수정 실패한다")
+    @MethodSource("updateSchoolInfoFailCaseProvider")
+    void updateSchoolInfo_Fail(
+            final String testCase,
+            final long memberId,
+            final Class<Exception> errorClass
+    ) {
+        // given
+        final SchoolRequest request = DtoCreater.create(
+                SchoolRequest.class,
+                "updatedSchool",
+                3L
+        );
+
+        assertThatThrownBy(() -> memberService.updateSchoolInfo(memberId, request))
+                .isInstanceOf(errorClass);
+    }
+
+    static Stream<Arguments> updateSchoolInfoFailCaseProvider() {
+        return Stream.of(
+                Arguments.of("해당하는 멤버가 없을 때", -1L, BadRequestException.class)
         );
     }
 
