@@ -30,7 +30,7 @@ public class LoginIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(JSON)
                 .body(request)
-                .when().post("/login")
+                .when().post("/auth/login")
                 .then().log().all();
 
         // then
@@ -58,7 +58,7 @@ public class LoginIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(JSON)
                 .body(request)
-                .when().post("/login")
+                .when().post("/auth/login")
                 .then().log().all();
 
         // then
@@ -75,7 +75,7 @@ public class LoginIntegrationTest extends IntegrationTest {
     void reissueAccessToken() {
         // when
         final ValidatableResponse response = requestLogin()
-                .when().get("/login/token")
+                .when().get("/auth/token")
                 .then().log().all();
 
         // then

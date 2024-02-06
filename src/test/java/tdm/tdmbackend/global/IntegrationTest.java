@@ -61,7 +61,7 @@ public abstract class IntegrationTest {
                 .given().log().all()
                 .contentType(JSON)
                 .body(request)
-                .when().post("/login")
+                .when().post("/auth/login")
                 .then().log().all()
                 .extract();
         String accessToken = response.body().jsonPath().getString("accessToken");

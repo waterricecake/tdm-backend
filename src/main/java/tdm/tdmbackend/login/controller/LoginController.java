@@ -21,12 +21,12 @@ import tdm.tdmbackend.login.service.LoginService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/auth")
 public class LoginController {
 
     private final LoginService loginService;
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<AccessTokenResponse> login(
             @RequestBody final LoginRequest loginRequest,
             final HttpServletResponse response
