@@ -8,9 +8,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = PRIVATE)
 @Getter
 public enum ExceptionCode {
-    COMMON(1000,""),
+    BAD_REQUEST(1000,"잘못된 요청입니다."),
     // 2000 ~ 2999 (멤버관련)
     NO_SUCH_MEMBER(2001,"해당하는 사용자가 존재하지 않습니다."),
+    NOT_FOR_GUEST(2002,"로그인이 필요합니다."),
 
     // 3000 ~ 3999 (게시물 관련)
     NO_SUCH_POST(3001, "해당하는 게시물이 존재하지 않습니다."),

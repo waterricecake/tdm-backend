@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class ExceptionResponse {
 
-    private final int code;
+    private final int errorCode;
     private final String errorMessage;
 
     public static ExceptionResponse from(final CustomException exception){
