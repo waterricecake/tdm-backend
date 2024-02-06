@@ -1,9 +1,12 @@
 package tdm.tdmbackend.member.service;
 
+import static tdm.tdmbackend.global.exception.ExceptionCode.NO_SUCH_MEMBER;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tdm.tdmbackend.global.exception.BadRequestException;
 import tdm.tdmbackend.member.domain.Member;
 import tdm.tdmbackend.member.domain.MemberTag;
 import tdm.tdmbackend.member.dto.request.InterestRequest;
@@ -29,7 +32,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MyPageResponse getMyPage(final Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow();
+                .orElseThrow(() -> BadRequestException.from(NO_SUCH_MEMBER));
         final List<Post> posts = postRepository.findPostsByMember(member);
         final List<Tag> tags = tagRepository.findTagsByMemberId(memberId);
         return MyPageResponse.of(member, posts, tags);
@@ -37,7 +40,7 @@ public class MemberService {
 
     public void updateSchoolInfo(final Long memberId, final SchoolRequest schoolRequest) {
         final Member member = memberRepository.findById(memberId)
-                .orElseThrow();
+                .orElseThrow(() -> BadRequestException.from(NO_SUCH_MEMBER));
         member.updateSchool(schoolRequest.getSchool());
         member.updateGrade(schoolRequest.getGrade());
     }

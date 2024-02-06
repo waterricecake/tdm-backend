@@ -1,5 +1,9 @@
 package tdm.tdmbackend.login.util;
 
+import static tdm.tdmbackend.global.exception.ExceptionCode.ACCESS_TOKEN_EXPIRED;
+import static tdm.tdmbackend.global.exception.ExceptionCode.NOT_VALID_TOKEN;
+import static tdm.tdmbackend.global.exception.ExceptionCode.REFRESH_TOKEN_EXPRIED;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JwtException;
@@ -12,6 +16,9 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import tdm.tdmbackend.global.exception.AccessTokenException;
+import tdm.tdmbackend.global.exception.BadRequestException;
+import tdm.tdmbackend.global.exception.RefreshTokenException;
 import tdm.tdmbackend.login.domain.MemberToken;
 
 @Component
@@ -53,12 +60,10 @@ public class JwtManager {
 
     public void validateTokens(final MemberToken memberToken){
         if (validateIsExpired(memberToken.getAccessToken())){
-            // todo : 예외처리 및 AccessToken 재발급
-            throw new IllegalArgumentException();
+            throw AccessTokenException.of(ACCESS_TOKEN_EXPIRED);
         }
         if (validateIsExpired(memberToken.getRefreshToken())){
-            // todo : 예외처리 (로그아웃)
-            throw new IllegalArgumentException();
+            throw RefreshTokenException.of(memberToken.getRefreshToken(),REFRESH_TOKEN_EXPRIED);
         }
     }
 
@@ -69,8 +74,7 @@ public class JwtManager {
         } catch (ExpiredJwtException e){
             return true;
         } catch (JwtException | IllegalArgumentException e){
-            // todo : 예외처리 (비정상적 로그인)
-            throw new IllegalArgumentException();
+            throw BadRequestException.from(NOT_VALID_TOKEN);
         }
     }
 

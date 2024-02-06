@@ -1,10 +1,14 @@
 package tdm.tdmbackend.post.service;
 
+import static tdm.tdmbackend.global.exception.ExceptionCode.NO_SUCH_MEMBER;
+import static tdm.tdmbackend.global.exception.ExceptionCode.NO_SUCH_POST;
+
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import tdm.tdmbackend.global.exception.BadRequestException;
 import tdm.tdmbackend.member.domain.Member;
 import tdm.tdmbackend.member.repository.MemberRepository;
 import tdm.tdmbackend.post.domain.Comment;
@@ -33,7 +37,7 @@ public class PostService {
 
     public Long create(final PostRequest postRequest, final Long memberId) {
         final Member member = memberRepository.findById(memberId)
-                .orElseThrow(IllegalAccessError::new);
+                .orElseThrow(()-> BadRequestException.from(NO_SUCH_MEMBER));
         final Post savePost = Post.of(member, postRequest.getTitle(), postRequest.getContent());
         final Post post = postRepository.save(savePost);
         postTagRepository.saveAll(
@@ -50,9 +54,8 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostDetailResponse read(final Long postId) {
-        // todo : 예외처리
         final Post post = postRepository.findById(postId)
-                .orElseThrow();
+                .orElseThrow(() -> BadRequestException.from(NO_SUCH_POST));
         final List<PostTag> tags = postTagRepository.findPostTagsByPost(post);
         final List<Image> images = imageRepository.findImagesByPost(post);
         final List<Comment> comments = commentRepository.findCommentsByPost(post);
@@ -61,7 +64,7 @@ public class PostService {
 
     public void update(final PostRequest postRequest, final Long postId) {
         final Post post = postRepository.findById(postId)
-                .orElseThrow();
+                .orElseThrow(()-> BadRequestException.from(NO_SUCH_POST));
         post.updateTitle(postRequest.getTitle());
         post.updateContent(postRequest.getContent());
         final List<Image> images = postRequest.getImages().stream()

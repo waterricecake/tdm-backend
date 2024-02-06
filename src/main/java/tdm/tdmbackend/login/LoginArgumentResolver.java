@@ -1,6 +1,7 @@
 package tdm.tdmbackend.login;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static tdm.tdmbackend.global.exception.ExceptionCode.BAD_REQUEST;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import tdm.tdmbackend.auth.Auth;
 import tdm.tdmbackend.auth.domain.Accessor;
+import tdm.tdmbackend.global.exception.BadRequestException;
+import tdm.tdmbackend.global.exception.GuestException;
 import tdm.tdmbackend.login.domain.MemberToken;
 import tdm.tdmbackend.login.repository.RefreshTokenRepository;
 import tdm.tdmbackend.login.util.AccessTokenExtractor;
@@ -23,6 +26,7 @@ import tdm.tdmbackend.login.util.JwtManager;
 @Component
 public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private static final String REFRESH_TOKEN = "refresh-token";
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtManager jwtManager;
 
@@ -42,7 +46,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         if (request == null) {
             //예외처리
-            throw new IllegalArgumentException();
+            throw BadRequestException.from(BAD_REQUEST);
         }
 
         try {
@@ -53,27 +57,24 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
             final Long memberId = Long.parseLong(jwtManager.parseSubject(accessToken));
             return Accessor.member(memberId);
-            // todo : 예외처리 -> cookie에 값이 없거나 refreshToken이 기간이 지났을 경우
-        } catch (Exception e) {
+        } catch (GuestException e) {
             return Accessor.guest();
         }
     }
 
     private String extractRefreshToken(final Cookie... cookies) {
         if (cookies == null) {
-            // todo : 예외처리
-            throw new IllegalArgumentException();
+            throw new GuestException();
         }
         return Arrays.stream(cookies)
                 .filter(this::isValidRefreshToken)
                 .findFirst()
-                // todo : 예외처리
-                .orElseThrow(IllegalArgumentException::new)
+                .orElseThrow(GuestException::new)
                 .getValue();
     }
 
     private boolean isValidRefreshToken(final Cookie cookie) {
-        return cookie.getName().equals("refresh-token")
+        return cookie.getName().equals(REFRESH_TOKEN)
                 && refreshTokenRepository.existsRefreshTokenByToken(cookie.getValue());
     }
 }

@@ -1,11 +1,14 @@
 package tdm.tdmbackend.auth;
 
+import static tdm.tdmbackend.global.exception.ExceptionCode.NOT_FOR_GUEST;
+
 import java.util.Arrays;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import tdm.tdmbackend.auth.domain.Accessor;
+import tdm.tdmbackend.global.exception.BadRequestException;
 
 @Aspect
 @Component
@@ -18,7 +21,6 @@ public class MemberOnlyChecker {
                 .map(Accessor.class::cast)
                 .filter(Accessor::isMember)
                 .findFirst()
-                // todo : 예외
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(()-> BadRequestException.from(NOT_FOR_GUEST));
     }
 }

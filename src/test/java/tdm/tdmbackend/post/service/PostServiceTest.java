@@ -1,14 +1,20 @@
 package tdm.tdmbackend.post.service;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import tdm.tdmbackend.global.DtoCreater;
 import tdm.tdmbackend.global.ServiceTest;
+import tdm.tdmbackend.global.exception.BadRequestException;
 import tdm.tdmbackend.post.domain.Image;
 import tdm.tdmbackend.post.domain.Post;
 import tdm.tdmbackend.post.domain.PostTag;
@@ -66,6 +72,33 @@ class PostServiceTest extends ServiceTest {
         );
     }
 
+    @ParameterizedTest(name = "{0}일때 게시물 생성에 실패한다")
+    @MethodSource("createFailCaseProvider")
+    void create_Fail(
+            final String testCase,
+            final long memberId,
+            final Class<Exception> errorClass
+    ) {
+        // given
+        final PostRequest request = DtoCreater.create(
+                PostRequest.class,
+                "testTitle",
+                "testContent",
+                List.of(4L, 5L, 6L),
+                List.of("update.jpeg", "update.jpg")
+        );
+
+        // when & then
+        assertThatThrownBy(() -> postService.create(request, memberId))
+                .isInstanceOf(errorClass);
+    }
+
+    static Stream<Arguments> createFailCaseProvider() {
+        return Stream.of(
+                Arguments.of("해당하는 멤버가 없을 때", -1L, BadRequestException.class)
+        );
+    }
+
     @Test
     @DisplayName("게시물을 조회한다")
     void read() {
@@ -87,6 +120,24 @@ class PostServiceTest extends ServiceTest {
                     softly.assertThat(response.getAuthor().getGrade()).isEqualTo(1L);
                     softly.assertThat(response.getComments()).hasSize(2);
                 }
+        );
+    }
+
+    @ParameterizedTest(name = "{0}일때 게시물 조회에 실패한다")
+    @MethodSource("readFailCaseProvider")
+    void read_Fail(
+            final String testCase,
+            final long postId,
+            final Class<Exception> errorClass
+    ) {
+        // when & then
+        assertThatThrownBy(() -> postService.read(postId))
+                .isInstanceOf(errorClass);
+    }
+
+    static Stream<Arguments> readFailCaseProvider() {
+        return Stream.of(
+                Arguments.of("해당하는 게시물이 없을 때", -1L, BadRequestException.class)
         );
     }
 
@@ -120,6 +171,33 @@ class PostServiceTest extends ServiceTest {
                     softly.assertThat(images).containsExactlyInAnyOrderElementsOf(request.getImages());
                     softly.assertThat(postTags).containsExactlyInAnyOrderElementsOf(request.getTags());
                 }
+        );
+    }
+
+    @ParameterizedTest(name = "{0}일때 게시물 수정에 실패한다")
+    @MethodSource("updateFailCaseProvider")
+    void update_Fail(
+            final String testCase,
+            final long postId,
+            final Class<Exception> errorClass
+    ) {
+        // given
+        final PostRequest request = DtoCreater.create(
+                PostRequest.class,
+                "testTitle",
+                "testContent",
+                List.of(4L, 5L, 6L),
+                List.of("update.jpeg", "update.jpg")
+        );
+
+        // when
+        assertThatThrownBy(() -> postService.update(request, postId))
+                .isInstanceOf(errorClass);
+    }
+
+    static Stream<Arguments> updateFailCaseProvider() {
+        return Stream.of(
+                Arguments.of("해당하는 게시물이 없을 때", -1L, BadRequestException.class)
         );
     }
 
