@@ -20,7 +20,6 @@ public class JwtManager {
     private final SecretKey secretKey;
     private final Long accessExpirationTime;
     private final Long refreshExpirationTime;
-    private final JwtParser jwtParser;
 
     public JwtManager(
             @Value("${security.jwt.secret-key}") final String secretKey,
@@ -30,9 +29,6 @@ public class JwtManager {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.accessExpirationTime = accessExpirationTime;
         this.refreshExpirationTime = refreshExpirationTime;
-        this.jwtParser = Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build();
     }
 
     public MemberToken createMemberToken(final String subject){
@@ -56,25 +52,38 @@ public class JwtManager {
     }
 
     public void validateTokens(final MemberToken memberToken){
-        validateToken(memberToken.getAccessToken());
-        validateToken(memberToken.getRefreshToken());
+        if (validateIsExpired(memberToken.getAccessToken())){
+            // todo : 예외처리 및 AccessToken 재발급
+            throw new IllegalArgumentException();
+        }
+        if (validateIsExpired(memberToken.getRefreshToken())){
+            // todo : 예외처리 (로그아웃)
+            throw new IllegalArgumentException();
+        }
     }
 
-    private boolean validateToken(final String token){
+    private boolean validateIsExpired(final String token){
         try{
-            jwtParser.parseClaimsJws(token);
-            return true;
-        } catch (ExpiredJwtException e){
+            getJwtParser().parseClaimsJws(token);
             return false;
+        } catch (ExpiredJwtException e){
+            return true;
         } catch (JwtException | IllegalArgumentException e){
-            // todo : 예외처리
+            // todo : 예외처리 (비정상적 로그인)
             throw new IllegalArgumentException();
         }
     }
 
     public String parseSubject(final String token){
-        return jwtParser.parseClaimsJws(token)
+        return getJwtParser()
+                .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    private JwtParser getJwtParser(){
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build();
     }
 }
