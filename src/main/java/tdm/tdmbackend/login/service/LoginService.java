@@ -6,6 +6,7 @@ import tdm.tdmbackend.login.domain.MemberToken;
 import tdm.tdmbackend.login.domain.RefreshToken;
 import tdm.tdmbackend.login.dto.request.LoginRequest;
 import tdm.tdmbackend.login.repository.RefreshTokenRepository;
+import tdm.tdmbackend.login.util.AccessTokenExtractor;
 import tdm.tdmbackend.login.util.JwtManager;
 import tdm.tdmbackend.member.domain.Member;
 import tdm.tdmbackend.member.repository.MemberRepository;
@@ -34,5 +35,12 @@ public class LoginService {
                         request.getSocialId()
                 )
         );
+    }
+
+    public String reissueAccessToken(final String refreshToken, final String authorization){
+        final String accessToken = AccessTokenExtractor.extractAccessToken(authorization);
+        jwtManager.validateTokens(new MemberToken(accessToken,refreshToken));
+        final String memberId = jwtManager.parseSubject(refreshToken);
+        return jwtManager.createReissueAccessToken(memberId);
     }
 }

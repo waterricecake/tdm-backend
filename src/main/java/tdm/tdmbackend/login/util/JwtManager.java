@@ -86,4 +86,8 @@ public class JwtManager {
                 .setSigningKey(secretKey)
                 .build();
     }
+
+    public String createReissueAccessToken(final String subject){
+        return createToken(subject,accessExpirationTime);
+    }
 }

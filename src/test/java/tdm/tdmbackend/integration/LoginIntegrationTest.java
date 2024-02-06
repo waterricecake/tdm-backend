@@ -44,7 +44,7 @@ public class LoginIntegrationTest extends IntegrationTest {
 
     @Test
     @DisplayName("신규 유저 로그인")
-    void signUp(){
+    void signUp() {
         // given
         LoginRequest request = DtoCreater.create(
                 LoginRequest.class,
@@ -68,5 +68,19 @@ public class LoginIntegrationTest extends IntegrationTest {
                 .body("accessToken", notNullValue())
                 .cookie("refresh-token", notNullValue())
                 .extract();
+    }
+
+    @Test
+    @DisplayName("access 토큰 재발행")
+    void reissueAccessToken() {
+        // when
+        final ValidatableResponse response = requestLogin()
+                .when().get("/login/token")
+                .then().log().all();
+
+        // then
+        response
+                .assertThat()
+                .body("accessToken", notNullValue());
     }
 }

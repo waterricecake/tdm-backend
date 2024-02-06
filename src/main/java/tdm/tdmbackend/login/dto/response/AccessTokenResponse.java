@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = PRIVATE)
 @Getter
 @NoArgsConstructor(access = PRIVATE)
-public class LoginResponse {
+public class AccessTokenResponse {
 
     private String accessToken;
 
-    public static LoginResponse from(final String accessToken) {
-        return new LoginResponse(accessToken);
+    public static AccessTokenResponse from(final String accessToken) {
+        return new AccessTokenResponse(accessToken);
     }
 }

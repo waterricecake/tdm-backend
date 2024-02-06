@@ -16,6 +16,7 @@ import tdm.tdmbackend.auth.Auth;
 import tdm.tdmbackend.auth.domain.Accessor;
 import tdm.tdmbackend.login.domain.MemberToken;
 import tdm.tdmbackend.login.repository.RefreshTokenRepository;
+import tdm.tdmbackend.login.util.AccessTokenExtractor;
 import tdm.tdmbackend.login.util.JwtManager;
 
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         }
 
         try {
-            final String accessToken = extractAccessToken(webRequest.getHeader(AUTHORIZATION));
+            final String accessToken = AccessTokenExtractor.extractAccessToken(webRequest.getHeader(AUTHORIZATION));
             final String refreshToken = extractRefreshToken(request.getCookies());
             final MemberToken memberToken = new MemberToken(accessToken, refreshToken);
             jwtManager.validateTokens(memberToken);
@@ -74,13 +75,5 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     private boolean isValidRefreshToken(final Cookie cookie) {
         return cookie.getName().equals("refresh-token")
                 && refreshTokenRepository.existsRefreshTokenByRefreshToken(cookie.getValue());
-    }
-
-    private String extractAccessToken(final String header) {
-        if (header != null && header.startsWith("Bearer ")) {
-            return header.substring("Bearer ".length()).trim();
-        }
-        // todo : 예외처리
-        throw new IllegalArgumentException();
     }
 }

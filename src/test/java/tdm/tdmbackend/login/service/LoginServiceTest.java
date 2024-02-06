@@ -30,6 +30,9 @@ class LoginServiceTest extends ServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private JwtManager jwtManager;
+
     @DisplayName("기존 유저가 로그인을 한다")
     @Test
     void login() {
@@ -84,5 +87,18 @@ class LoginServiceTest extends ServiceTest {
                     assertThat(memberSocialIds).contains("newSocialId");
                 }
         );
+    }
+
+    @Test
+    @DisplayName("토큰을 재발행한다")
+    void reissueAccessToken(){
+        // givne
+        MemberToken memberToken = jwtManager.createMemberToken("1");
+        String authorization = "Bearer " + memberToken.getAccessToken();
+        // when
+        String reissueAccessToken = loginService.reissueAccessToken(memberToken.getRefreshToken(), authorization);
+
+        // then
+        jwtManager.validateTokens(new MemberToken(reissueAccessToken, memberToken.getRefreshToken()));
     }
 }

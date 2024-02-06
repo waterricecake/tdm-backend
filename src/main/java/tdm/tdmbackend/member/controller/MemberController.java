@@ -31,7 +31,6 @@ public class MemberController {
     public ResponseEntity<MyPageResponse> getMyPage(
             @Auth Accessor accessor
     ) {
-        // todo : 인증 인가 필요
         final MyPageResponse myPageResponse = memberService.getMyPage(accessor.getMemberId());
         return ResponseEntity.ok(myPageResponse);
     }
@@ -43,7 +42,6 @@ public class MemberController {
             @Auth Accessor accessor,
             @RequestBody final SchoolRequest schoolRequest
     ) {
-        // todo: 인증 인가 필요
         memberService.updateSchoolInfo(accessor.getMemberId(), schoolRequest);
         return ResponseEntity.noContent().build();
     }
@@ -55,7 +53,6 @@ public class MemberController {
             @Auth Accessor accessor,
             @RequestBody final InterestRequest interestRequest
     ) {
-        // todo: 인증인가
         memberService.updateInterests(accessor.getMemberId(), interestRequest);
         return ResponseEntity.noContent().build();
     }
