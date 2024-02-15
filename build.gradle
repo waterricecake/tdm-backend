@@ -46,6 +46,6 @@ processResources.dependsOn('copySecret')
 
 tasks.register('copySecret', Copy) {
 	from './tdm-submodule'
-	include 'application.yml'
+	include '*.yml'
 	into './src/main/resources'
 }
