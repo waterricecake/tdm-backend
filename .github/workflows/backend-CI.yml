@@ -19,9 +19,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'corretto'
-        
+
     - name: 현재 경로 이동
       run: cd ..
+
+    - name: 현재 파일 검색
+      run: ls
 
     - name: gradlew 권한을 부여합니다.
       run: chmod +x gradlew
