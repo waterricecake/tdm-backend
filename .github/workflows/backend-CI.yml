@@ -21,7 +21,7 @@ jobs:
         distribution: 'corretto'
 
     - name: gradlew 권한을 부여합니다.
-      run: chmod +x ./gradlew
+      run: git update-index --chmod=+x ./gradlew
 
-    - name: Gradle을 통해 빌드합니다.
+    - name: 빌드합니다.
       run: ./gradlew build -Dspring.profiles.active=test
