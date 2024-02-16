@@ -19,9 +19,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'corretto'
+        
+    - name: 현재 경로 이동
+      run: cd ..
 
     - name: gradlew 권한을 부여합니다.
-      run: chmod +x /gradlew
+      run: chmod +x gradlew
 
     - name: Gradle을 통해 빌드합니다.
       run: ./gradlew build
