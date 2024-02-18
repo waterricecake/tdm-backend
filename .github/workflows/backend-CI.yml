@@ -45,3 +45,15 @@ jobs:
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
+
+      - name: Get Github action IP
+        id: ip
+        uses: haythem/public-ip@v1.2
+
+      - name: AWS connect
+        env:
+          DOCKER_NAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          ssh -i ${{secrets.AWS_PEM_KEY}} ubuntu@${{secrets.AWS_PUBLIC_ID}}
+          sh /home/ubuntu/script/deploy.sh latest
