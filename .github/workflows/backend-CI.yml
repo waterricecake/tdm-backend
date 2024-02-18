@@ -24,7 +24,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
       with:
-        token: ${{ secrets.ACTION_TOKEN }}
+        token: ${{ secrets.TDM_SUBMODULE_REPO }}
         submodules: true
       # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
       # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
