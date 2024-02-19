@@ -49,9 +49,10 @@ jobs:
       - name: run application use ssh
         uses: appleboy/ssh-action@master
         env:
-          PORT: 8000
+          APP_PORT: 8000
         with:
           host: ${{secrets.TDM_DEV_IP}}
           username: ${{secrets.TDM_DEV_USER_NAME}}
           key: ${{secrets.TDM_DEV_PEM_KEY}}
           script: ${{vars.DEV_DEPLOY_SCRIPT}}
+          port: ${{secrets.DEV_SSH_PORT}}
