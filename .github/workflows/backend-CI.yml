@@ -52,5 +52,4 @@ jobs:
           host: ${{secrets.TDM_DEV_IP}}
           username: ${{secrets.TDM_DEV_USER_NAME}}
           key: ${{secrets.TDM_DEV_PEM_KEY}}
-          script_stop: true
-          script: "sh /home/ubuntu/script/deploy.sh latest"
+          script: ${{vars.DEV_DEPLOY_SCRIPT}}
