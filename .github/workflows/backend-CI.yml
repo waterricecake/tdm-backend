@@ -55,4 +55,3 @@ jobs:
           username: ${{secrets.TDM_DEV_USER_NAME}}
           key: ${{secrets.TDM_DEV_PEM_KEY}}
           script: ${{vars.DEV_DEPLOY_SCRIPT}}
-          port: ${{secrets.DEV_SSH_PORT}}
