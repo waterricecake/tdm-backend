@@ -48,6 +48,8 @@ jobs:
 
       - name: run application use ssh
         uses: appleboy/ssh-action@master
+        env:
+          PORT: 8000
         with:
           host: ${{secrets.TDM_DEV_IP}}
           username: ${{secrets.TDM_DEV_USER_NAME}}
