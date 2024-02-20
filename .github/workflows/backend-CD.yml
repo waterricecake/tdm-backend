@@ -1,0 +1,55 @@
+name: Java CI/CD with Gradle
+
+on:
+  push:
+    branches: [ dev ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.TDM_SUBMODULE_REPO }}
+          submodules: true
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build
+
+      - name: docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: build and release to DockerHub
+        env:
+          NAME: waterricecake
+          REPO: tdm
+        run: |
+          docker build -t $REPO .
+          docker tag $REPO:latest $NAME/$REPO:latest
+          docker push $NAME/$REPO:latest
+
+      - name: cd (check aws 보안그룹)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.TDM_DEV_IP}}
+          username: ${{secrets.TDM_DEV_USER_NAME}}
+          key: ${{secrets.TDM_DEV_PEM_KEY}}
+          script: ${{vars.DEV_DEPLOY_SCRIPT}}

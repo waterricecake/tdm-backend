@@ -2,7 +2,7 @@ name: Java CI with Gradle
 
 on:
   pull_request:
-    branches: [ main, dev ]
+    branches: [ dev ]
 
 permissions:
   contents: read
@@ -30,30 +30,3 @@ jobs:
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
-
-      - name: docker login
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: build and release to DockerHub
-        env:
-          NAME: waterricecake
-          REPO: tdm
-        run: |
-          docker build -t $REPO .
-          docker tag $REPO:latest $NAME/$REPO:latest
-          docker push $NAME/$REPO:latest
-
-      - name: Get Github Actions IP
-        id: ip
-        uses: haythem/public-ip@v1.2
-
-      - name: run application use ssh
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{secrets.TDM_DEV_IP}}
-          username: ${{secrets.TDM_DEV_USER_NAME}}
-          key: ${{secrets.TDM_DEV_PEM_KEY}}
-          script: ${{vars.DEV_DEPLOY_SCRIPT}}
