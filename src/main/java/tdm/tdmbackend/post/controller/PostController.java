@@ -39,7 +39,7 @@ public class PostController {
 
     @Operation(
             summary = "게시물 생성 api",
-            description = "로그인 필요",
+            description = "로그인 필요, tag의 경우 없는 tagId 입력시 에러처리 됨",
             security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
     )
     @PostMapping
