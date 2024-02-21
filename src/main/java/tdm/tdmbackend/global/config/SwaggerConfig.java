@@ -24,7 +24,7 @@ import tdm.tdmbackend.auth.Auth;
         name = AUTHORIZATION
 )
 @SecurityScheme(
-        type = SecuritySchemeType.HTTP,
+        type = SecuritySchemeType.APIKEY,
         scheme = "bearer",
         bearerFormat = "JWT",
         in = SecuritySchemeIn.COOKIE,
