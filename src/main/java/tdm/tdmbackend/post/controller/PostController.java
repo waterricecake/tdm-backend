@@ -29,7 +29,7 @@ import tdm.tdmbackend.post.dto.response.PostDetailResponse;
 import tdm.tdmbackend.post.dto.response.PostResponse;
 import tdm.tdmbackend.post.service.PostService;
 
-@Tag(name = "01. Post API", description = "게시물 생성, 조회, 수정 삭제 API")
+@Tag(name = "02. Post API", description = "게시물 생성, 조회, 수정 삭제 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")

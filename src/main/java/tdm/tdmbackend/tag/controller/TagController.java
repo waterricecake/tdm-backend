@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tdm.tdmbackend.tag.dto.response.TagResponse;
 import tdm.tdmbackend.tag.service.TagService;
 
-@Tag(name = "03. Tag API", description = "태그 생성 수정 삭제 API")
+@Tag(name = "04. Tag API", description = "태그 생성 수정 삭제 API")
 @RestController
 @RequiredArgsConstructor(access = PRIVATE)
 @RequestMapping("/tags")

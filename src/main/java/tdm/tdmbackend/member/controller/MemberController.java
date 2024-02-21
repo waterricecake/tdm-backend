@@ -20,7 +20,7 @@ import tdm.tdmbackend.member.dto.request.SchoolRequest;
 import tdm.tdmbackend.member.dto.response.MyPageResponse;
 import tdm.tdmbackend.member.service.MemberService;
 
-@Tag(name = "04. Mypage API", description = "mypage 조회 수정 API")
+@Tag(name = "01. Mypage API", description = "mypage 조회 수정 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mypage")

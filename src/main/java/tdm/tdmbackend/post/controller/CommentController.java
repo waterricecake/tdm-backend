@@ -22,7 +22,7 @@ import tdm.tdmbackend.post.dto.request.CommentRequest;
 import tdm.tdmbackend.post.dto.response.CommentResponse;
 import tdm.tdmbackend.post.service.CommentService;
 
-@Tag(name = "02. Comment API", description = "댓글 생성 수정 삭제 API")
+@Tag(name = "03. Comment API", description = "댓글 생성 수정 삭제 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments")

@@ -27,7 +27,7 @@ import tdm.tdmbackend.login.dto.request.LoginRequest;
 import tdm.tdmbackend.login.dto.response.AccessTokenResponse;
 import tdm.tdmbackend.login.service.LoginService;
 
-@Tag(name = "05. Authorization API", description = "인증인가")
+@Tag(name = "00. Authorization API", description = "인증인가")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
