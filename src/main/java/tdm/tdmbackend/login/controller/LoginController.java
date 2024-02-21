@@ -1,8 +1,12 @@
 package tdm.tdmbackend.login.controller;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.CREATED;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
@@ -23,6 +27,7 @@ import tdm.tdmbackend.login.dto.request.LoginRequest;
 import tdm.tdmbackend.login.dto.response.AccessTokenResponse;
 import tdm.tdmbackend.login.service.LoginService;
 
+@Tag(name = "05. Authorization API", description = "인증인가")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
@@ -30,6 +35,9 @@ public class LoginController {
 
     private final LoginService loginService;
 
+    @Operation(
+            summary = "로그인"
+    )
     @PostMapping("/login")
     public ResponseEntity<AccessTokenResponse> login(
             @RequestBody final LoginRequest loginRequest,
@@ -47,6 +55,11 @@ public class LoginController {
         return ResponseEntity.status(CREATED).body(AccessTokenResponse.from(memberToken.getAccessToken()));
     }
 
+    @Operation(
+            summary = "access 토큰 재발급",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @GetMapping("/token")
     public ResponseEntity<AccessTokenResponse> reissueAccessToken(
             @CookieValue("refresh-token") final String refreshToken,
@@ -56,6 +69,11 @@ public class LoginController {
         return ResponseEntity.status(CREATED).body(AccessTokenResponse.from(accessToken));
     }
 
+    @Operation(
+            summary = "로그아웃",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @DeleteMapping("/logout")
     @MemberOnly
     public ResponseEntity<Void> logout(

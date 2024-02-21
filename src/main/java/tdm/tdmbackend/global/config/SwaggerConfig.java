@@ -11,6 +11,8 @@ import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestHeader;
 import tdm.tdmbackend.auth.Auth;
 
 @Configuration
@@ -32,7 +34,9 @@ public class SwaggerConfig {
 
     static {
         SpringDocUtils.getConfig()
-                .addAnnotationsToIgnore(Auth.class);
+                .addAnnotationsToIgnore(Auth.class)
+                .addAnnotationsToIgnore(CookieValue.class)
+                .addAnnotationsToIgnore(RequestHeader.class);
     }
 
     @Bean
