@@ -1,6 +1,9 @@
 package tdm.tdmbackend.member.controller;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +20,7 @@ import tdm.tdmbackend.member.dto.request.SchoolRequest;
 import tdm.tdmbackend.member.dto.response.MyPageResponse;
 import tdm.tdmbackend.member.service.MemberService;
 
-@Tag(name = "Mypage API", description = "mypage 조회 수정 API")
+@Tag(name = "01. Mypage API", description = "mypage 조회 수정 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mypage")
@@ -25,7 +28,11 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Operation(summary = "마이페이지 조회")
+    @Operation(
+            summary = "마이페이지 조회",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @GetMapping
     @MemberOnly
     public ResponseEntity<MyPageResponse> getMyPage(
@@ -35,7 +42,11 @@ public class MemberController {
         return ResponseEntity.ok(myPageResponse);
     }
 
-    @Operation(summary = "학교 정보 수정")
+    @Operation(
+            summary = "학교 정보 수정",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @PutMapping("/school")
     @MemberOnly
     public ResponseEntity<Void> updateSchool(
@@ -46,7 +57,11 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "관심사 정보 수정")
+    @Operation(
+            summary = "관심사 정보 수정",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @PutMapping("/interest")
     @MemberOnly
     public ResponseEntity<Void> updateInterest(

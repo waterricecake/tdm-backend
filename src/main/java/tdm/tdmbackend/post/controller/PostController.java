@@ -1,8 +1,10 @@
 package tdm.tdmbackend.post.controller;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -27,7 +29,7 @@ import tdm.tdmbackend.post.dto.response.PostDetailResponse;
 import tdm.tdmbackend.post.dto.response.PostResponse;
 import tdm.tdmbackend.post.service.PostService;
 
-@Tag(name = "Post API", description = "게시물 생성, 조회, 수정 삭제 API")
+@Tag(name = "02. Post API", description = "게시물 생성, 조회, 수정 삭제 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -35,7 +37,11 @@ public class PostController {
 
     private final PostService postService;
 
-    @Operation(summary = "게시물 생성")
+    @Operation(
+            summary = "게시물 생성 api",
+            description = "로그인 필요, tag의 경우 없는 tagId 입력시 에러처리 됨",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @PostMapping
     @MemberOnly
     public ResponseEntity<Void> create(
@@ -53,7 +59,11 @@ public class PostController {
         return ResponseEntity.ok(postDetailResponse);
     }
 
-    @Operation(summary = "게시물 수정")
+    @Operation(
+            summary = "게시물 수정",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @PutMapping("/{postId}")
     @MemberOnly
     public ResponseEntity<Void> update(
@@ -65,7 +75,11 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "게시물 삭제")
+    @Operation(
+            summary = "게시물 삭제",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @DeleteMapping("/{postId}")
     @MemberOnly
     public ResponseEntity<Void> delete(
