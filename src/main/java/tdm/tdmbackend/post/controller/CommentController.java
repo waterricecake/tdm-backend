@@ -1,6 +1,9 @@
 package tdm.tdmbackend.post.controller;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +22,7 @@ import tdm.tdmbackend.post.dto.request.CommentRequest;
 import tdm.tdmbackend.post.dto.response.CommentResponse;
 import tdm.tdmbackend.post.service.CommentService;
 
-@Tag(name = "Comment API", description = "댓글 생성 수정 삭제 API")
+@Tag(name = "02. Comment API", description = "댓글 생성 수정 삭제 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments")
@@ -28,7 +31,11 @@ public class CommentController {
     private final CommentService commentService;
 
 
-    @Operation(summary = "댓글 작성")
+    @Operation(
+            summary = "댓글 작성",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @PostMapping("/posts/{postId}")
     @MemberOnly
     public ResponseEntity<CommentResponse> createComment(
@@ -41,7 +48,11 @@ public class CommentController {
         return ResponseEntity.created(located).body(commentResponse);
     }
 
-    @Operation(summary = "댓글 수정")
+    @Operation(
+            summary = "댓글 수정",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @PutMapping("/{commentId}")
     @MemberOnly
     public ResponseEntity<CommentResponse> updateComment(
@@ -53,7 +64,11 @@ public class CommentController {
         return ResponseEntity.ok(commentResponse);
     }
 
-    @Operation(summary = "댓글 삭제")
+    @Operation(
+            summary = "댓글 삭제",
+            description = "로그인 필요",
+            security = {@SecurityRequirement(name = AUTHORIZATION), @SecurityRequirement(name = "refreshToken")}
+    )
     @DeleteMapping("/{commentId}")
     @MemberOnly
     public ResponseEntity<Void> deleteComment(
