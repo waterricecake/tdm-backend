@@ -11,6 +11,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 import org.springdoc.core.utils.SpringDocUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -33,6 +34,9 @@ import tdm.tdmbackend.auth.Auth;
         name = "refreshToken"
 )
 public class SwaggerConfig {
+
+    @Value("${domain.url}")
+    private String DOMAIN_URL;
 
     static {
         SpringDocUtils.getConfig()
@@ -58,7 +62,7 @@ public class SwaggerConfig {
 
     private List<Server> setServer(){
         final Server httpsServer = new Server();
-        httpsServer.setUrl("https://");
+        httpsServer.setUrl(DOMAIN_URL);
         return List.of(httpsServer);
     }
 }
